@@ -33,8 +33,8 @@ const incidentSchema = new mongoose.Schema({
   }
 });
 
-const Incident = mongoose.model('Incident', incidentSchema);
 
+const Incident = mongoose.model('Incident', incidentSchema);
 
 app.post('/incidents', async (req, res) => {
   try {
@@ -46,10 +46,6 @@ app.post('/incidents', async (req, res) => {
   }
 });
 
-/**
- * GET /incidents
- * Obtiene la lista de incidentes.
- */
 app.get('/incidents', async (req, res) => {
   try {
     const incidents = await Incident.find();
@@ -60,6 +56,59 @@ app.get('/incidents', async (req, res) => {
 });
 
 
+app.get('/incidents/:id', async (req, res) => {
+  try {
+    const incident = await Incident.findById(req.params.id);
+    
+    if (!incident) {
+      return res.status(404).json({ error: 'Incidente no encontrado' });
+    }
+    
+    res.json(incident);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.put('/incidents/:id', async (req, res) => {
+  const { status } = req.body;
+  
+  if (!status) {
+    return res.status(400).json({ error: 'El campo status es obligatorio para la actualización' });
+  }
+  
+  try {
+    const incident = await Incident.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!incident) {
+      return res.status(404).json({ error: 'Incidente no encontrado' });
+    }
+
+    res.json(incident);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.delete('/incidents/:id', async (req, res) => {
+  try {
+    const incident = await Incident.findByIdAndDelete(req.params.id);
+    
+    if (!incident) {
+      return res.status(404).json({ error: 'Incidente no encontrado' });
+    }
+    
+    res.json({ message: 'Incidente eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
