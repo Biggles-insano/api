@@ -35,7 +35,7 @@ Esta API permite gestionar incidentes de soporte técnico. Se creó como parte d
 
 curl -X POST http://localhost:3000/incidents \
   -H "Content-Type: application/json" \
-  -d '{"reporter": "Juan Perez", "description": "Problemas en la curva 3"}'
+  -d '{"reporter": "Juan Perez", "description": "Problemas con la impresora"}'
 
 ## GET
 
