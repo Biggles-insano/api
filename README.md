@@ -1,6 +1,6 @@
 # API Incidentes
 
-Esta API permite gestionar incidentes de soporte técnico. Se creó como parte de un ejercicio y permite crear y consultar incidentes de forma sencilla.
+Esta API permite gestionar incidentes de soporte técnico. Se creó como parte de un ejercicio y permite crear y consultar incidentes de forma sencilla. Para aclarar. La que dice api es la de verdad (osea la que se conecta a mongo de forma online) la que dice server esta ahí en caso no funcione la otra (osea todo 100% local)
 
 ## Tecnologías Utilizadas
 
