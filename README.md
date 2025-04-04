@@ -41,3 +41,14 @@ curl -X POST http://localhost:3000/incidents \
 
 curl http://localhost:3000/incidents
 
+los demás
+
+curl http://localhost:3000/incidents/67ecc175040c9617b14d8481
+
+curl -X PUT http://localhost:3000/incidents/67ecc175040c9617b14d8481 \
+  -H "Content-Type: application/json" \
+  -d '{"status": "en proceso"}'
+
+
+  curl -X DELETE http://localhost:3000/incidents/67ecc175040c9617b14d8481
+
