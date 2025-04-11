@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Incidentes - Soporte Técnico</title>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+  <header>
+    <h1>Sitio de Incidentes</h1>
+  </header>
+
+  <section id="crearIncidente">
+    <h2>Crear Nuevo Incidente</h2>
+    <form id="formIncidente">
+      <label for="reporter">Reportero:</label>
+      <input type="text" id="reporter" name="reporter" required>
+
+      <label for="description">Descripción:</label>
+      <textarea id="description" name="description" required minlength="10"></textarea>
+
+      <button type="submit">Crear Incidente</button>
+    </form>
+  </section>
+
+  <section id="listaIncidentes">
+    <h2>Listado de Incidentes</h2>
+    <div id="incidentsContainer"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
