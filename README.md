@@ -52,3 +52,13 @@ curl -X PUT http://localhost:3000/incidents/67ecc175040c9617b14d8481 \
 
   curl -X DELETE http://localhost:3000/incidents/67ecc175040c9617b14d8481
 
+
+
+UPDATE:
+
+Ahora solo hay que hacer esto: docker-compose up --build -d
+y aparentemente debería de funcionar todo
+
+
+
+
