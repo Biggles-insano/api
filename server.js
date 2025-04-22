@@ -1,15 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
-mongoose.connect('mongodb://localhost/incidentsdb', {
+app.use(express.static(path.join(__dirname, 'frontend')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/incidentsdb';
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Conectado a MongoDB'))
+.then(() => console.log(`Conectado a MongoDB en ${MONGO_URI}`))
 .catch(err => console.error('Error al conectar a MongoDB:', err));
 
 const incidentSchema = new mongoose.Schema({
@@ -32,9 +42,8 @@ const incidentSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-
 const Incident = mongoose.model('Incident', incidentSchema);
+
 
 app.post('/incidents', async (req, res) => {
   try {
@@ -55,55 +64,37 @@ app.get('/incidents', async (req, res) => {
   }
 });
 
-
 app.get('/incidents/:id', async (req, res) => {
   try {
     const incident = await Incident.findById(req.params.id);
-    
-    if (!incident) {
-      return res.status(404).json({ error: 'Incidente no encontrado' });
-    }
-    
+    if (!incident) return res.status(404).json({ error: 'Incidente no encontrado' });
     res.json(incident);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-
 app.put('/incidents/:id', async (req, res) => {
   const { status } = req.body;
-  
-  if (!status) {
-    return res.status(400).json({ error: 'El campo status es obligatorio para la actualización' });
-  }
-  
+  if (!status) return res.status(400).json({ error: 'El campo status es obligatorio para la actualización' });
+
   try {
     const incident = await Incident.findByIdAndUpdate(
       req.params.id,
       { status },
       { new: true, runValidators: true }
     );
-
-    if (!incident) {
-      return res.status(404).json({ error: 'Incidente no encontrado' });
-    }
-
+    if (!incident) return res.status(404).json({ error: 'Incidente no encontrado' });
     res.json(incident);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-
 app.delete('/incidents/:id', async (req, res) => {
   try {
     const incident = await Incident.findByIdAndDelete(req.params.id);
-    
-    if (!incident) {
-      return res.status(404).json({ error: 'Incidente no encontrado' });
-    }
-    
+    if (!incident) return res.status(404).json({ error: 'Incidente no encontrado' });
     res.json({ message: 'Incidente eliminado correctamente' });
   } catch (error) {
     res.status(500).json({ error: error.message });
